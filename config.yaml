@@ -1,0 +1,64 @@
+models:
+  common:
+    in_channels: 4
+    num_classes: 4
+
+  unet:
+    channels: [16, 32, 64, 128, 256]
+    strides: [2, 2, 2, 2]
+    num_res_units: 2
+    norm: "BATCH"
+
+  # VNet配置（关键：使用单个值，代码会自动适配版本）
+  vnet:
+    dropout_prob: 0.2  # 单个浮点数，代码会根据版本转换为列表
+
+  dynunet:
+    kernel_size: [3, 3, 3, 3, 3, 3]
+    strides: [1, 2, 2, 2, 2, [2, 2, 1]]
+    upsample_kernel_size: [1, 2, 2, 2, 2, [2, 2, 1]]
+    norm_name: "INSTANCE"
+
+  # 其他模型配置保持不变...
+  unetr:
+    img_size: [128, 128, 128]
+    feature_size: 16
+    hidden_size: 384
+    mlp_dim: 1536
+    num_heads: 8
+    pos_embed: "perceptron"
+    norm_name: "instance"
+    res_block: true
+    dropout_rate: 0.2
+
+  ours:
+    num_cls: 4
+
+  swin_unetr:
+    img_size: [128, 128, 128]
+    feature_size: 24
+    use_checkpoint: false
+
+  segresnet:
+    init_filters: 32
+    blocks_down: [1, 2, 2, 4]
+    blocks_up: [1, 1, 1]
+    dropout_prob: 0.2
+
+  attention_unet:
+    channels: [16, 32, 64, 128]
+    strides: [2, 2, 2]
+
+  highresnet:
+    dropout_prob: 0.2
+
+experiment:
+  models_to_run:
+    - unet
+    - dynunet
+    - unetr
+    - swin_unetr
+#    - segresnet
+    - attention_unet
+    - ours
+  output_dir: "./experiment_results"
